@@ -1,5 +1,5 @@
 # app/__init__.py
-from flask import Flask
+from flask import Flask, redirect, url_for
 from app.config import config
 from app.extensions import db, login_manager, migrate
 
@@ -21,5 +21,9 @@ def create_app(config_name='development'):
     app.register_blueprint(courses_bp)
     app.register_blueprint(content_bp)
     app.register_blueprint(evaluations_bp)
+
+    @app.route('/')
+    def index():
+        return redirect(url_for('courses.index'))
 
     return app
