@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Subir material: {{ course.title }}{% endblock %}
+
+{% block content %}
+<h1>Subir material a "{{ course.title }}"</h1>
+
+<form method="POST" enctype="multipart/form-data" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="field">
+        {{ form.title.label }}
+        {{ form.title(size=50) }}
+        {% for error in form.title.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.description.label }}
+        {{ form.description(rows=3) }}
+        {% for error in form.description.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    {# Radio para elegir entre archivo o enlace #}
+    <div class="field">
+        <label class="field-label">{{ form.material_type.label }}</label>
+        {% for subfield in form.material_type %}
+            <label class="radio-label">
+                {{ subfield() }} {{ subfield.label.text }}
+            </label>
+        {% endfor %}
+    </div>
+
+    {# Campo archivo (se muestra cuando tipo = file) #}
+    <div class="field" id="file-field">
+        {{ form.file.label }}
+        {{ form.file() }}
+        {% for error in form.file.errors %}<span class="error">{{ error }}</span>{% endfor %}
+        <span class="field-help">PDF, Word, Excel, PowerPoint, video, imagen, ZIP (máx. 16 MB)</span>
+    </div>
+
+    {# Campo enlace (se muestra cuando tipo = link) #}
+    <div class="field" id="link-field" style="display:none;">
+        {{ form.external_url.label }}
+        {{ form.external_url(size=60, placeholder="https://...") }}
+        {% for error in form.external_url.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+
+<p><a href="{{ url_for('content.list_materials', course_id=course.id) }}">← Volver a contenidos</a></p>
+
+<script>
+    // Muestra u oculta los campos según el tipo de material seleccionado.
+    // Cuando el profesor elige "Enlace", se oculta el campo de archivo
+    // y se muestra el campo de URL, y viceversa.
+    document.querySelectorAll('input[name="material_type"]').forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            var isLink = this.value === 'link';
+            document.getElementById('file-field').style.display = isLink ? 'none' : 'block';
+            document.getElementById('link-field').style.display = isLink ? 'block' : 'none';
+        });
+    });
+</script>
+{% endblock %}

@@ -7,10 +7,12 @@ Esto evita imports circulares entre modules/*.
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
 
 db = SQLAlchemy()
 login_manager = LoginManager()
 migrate = Migrate()
+csrf = CSRFProtect()
 
 # Configuración de Flask-Login: a dónde redirige si alguien
 # no logueado intenta acceder a una ruta protegida

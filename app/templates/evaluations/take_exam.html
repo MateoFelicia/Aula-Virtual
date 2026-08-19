@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}Rendir: {{ exam.title }}{% endblock %}
+
+{% block content %}
+<h1>{{ exam.title }}</h1>
+
+{% if exam.description %}
+    <div class="exam-description">
+        <p>{{ exam.description }}</p>
+    </div>
+{% endif %}
+
+<div class="exam-meta">
+    <span>{{ exam.total_questions() }} preguntas</span>
+    {% if exam.time_limit %}
+        <span>&middot; Tiempo límite: {{ exam.time_limit }} minutos</span>
+    {% endif %}
+</div>
+
+{# ── Formulario de examen ── #
+   Cada pregunta se renderiza como un grupo de radio buttons.
+   El name="question_{id}" vincula cada radio group con su pregunta.
+   Al enviar, el form POST llega a la ruta submit_exam.
+#}
+<form method="POST" action="{{ url_for('evaluations.submit_exam', exam_id=exam.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    {% for question in questions %}
+        <div class="question-card">
+            <h3 class="question-number">Pregunta {{ loop.index }}</h3>
+            <p class="question-text">{{ question.text }}</p>
+
+            <div class="question-options">
+                <label class="option-label">
+                    <input type="radio" name="question_{{ question.id }}" value="a" required>
+                    <span>{{ question.option_a }}</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="question_{{ question.id }}" value="b" required>
+                    <span>{{ question.option_b }}</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="question_{{ question.id }}" value="c" required>
+                    <span>{{ question.option_c }}</span>
+                </label>
+                <label class="option-label">
+                    <input type="radio" name="question_{{ question.id }}" value="d" required>
+                    <span>{{ question.option_d }}</span>
+                </label>
+            </div>
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn" onclick="return confirm('¿Enviar examen? No podrás cambiar tus respuestas.');">
+        Enviar examen
+    </button>
+</form>
+
+<p><a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}">← Volver a evaluaciones</a></p>
+{% endblock %}

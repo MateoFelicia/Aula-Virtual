@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Agregar pregunta: {{ exam.title }}{% endblock %}
+
+{% block content %}
+<h1>Agregar pregunta a "{{ exam.title }}"</h1>
+
+<p class="course-meta">Preguntas actuales: <strong>{{ question_count }}</strong></p>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="field">
+        {{ form.text.label }}
+        {{ form.text(rows=2) }}
+        {% for error in form.text.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.option_a.label }}
+        {{ form.option_a(size=60) }}
+        {% for error in form.option_a.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.option_b.label }}
+        {{ form.option_b(size=60) }}
+        {% for error in form.option_b.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.option_c.label }}
+        {{ form.option_c(size=60) }}
+        {% for error in form.option_c.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.option_d.label }}
+        {{ form.option_d(size=60) }}
+        {% for error in form.option_d.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        <label class="field-label">{{ form.correct_option.label }}</label>
+        {% for subfield in form.correct_option %}
+            <label class="radio-label">
+                {{ subfield() }} {{ subfield.label.text }}
+            </label>
+        {% endfor %}
+        {% for error in form.correct_option.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+
+<div class="course-actions" style="margin-top:1rem;">
+    <a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}" class="btn btn-outline">Terminar y volver</a>
+</div>
+{% endblock %}

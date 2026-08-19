@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% block title %}Contenidos: {{ course.title }}{% endblock %}
+
+{% block content %}
+<h1>Contenidos de "{{ course.title }}"</h1>
+
+{# Solo el profesorDueño puede subir material #}
+{% if current_user.is_profesor() and course.instructor_id == current_user.id %}
+    <p>
+        <a href="{{ url_for('content.upload', course_id=course.id) }}" class="btn">+ Subir material</a>
+    </p>
+{% endif %}
+
+{% if materials %}
+    <div class="materials-list">
+        {% for material in materials %}
+            <div class="material-card">
+                <div class="material-info">
+                    {# Icono según el tipo de material #}
+                    <span class="material-icon">
+                        {% if material.material_type == 'file' %}
+                            &#128196;  {# icono de archivo #}
+                        {% else %}
+                            &#128279;  {# icono de enlace #}
+                        {% endif %}
+                    </span>
+
+                    <div>
+                        <h3>{{ material.title }}</h3>
+
+                        {% if material.description %}
+                            <p class="material-desc">{{ material.description }}</p>
+                        {% endif %}
+
+                        <span class="material-meta">
+                            Subido el {{ material.created_at.strftime('%d/%m/%Y') }}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="material-actions">
+                    {% if material.material_type == 'file' and material.file_path %}
+                        <a href="{{ url_for('content.download', material_id=material.id) }}" class="btn btn-sm">Descargar</a>
+                    {% elif material.material_type == 'link' and material.external_url %}
+                        <a href="{{ material.external_url }}" target="_blank" class="btn btn-sm">Abrir enlace</a>
+                    {% endif %}
+
+                    {# Solo el profesorDueño puede eliminar #}
+                    {% if current_user.is_profesor() and course.instructor_id == current_user.id %}
+                        <form method="POST" action="{{ url_for('content.delete', material_id=material.id) }}" class="inline-form"
+                              onsubmit="return confirm('¿Eliminar este material?');">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="empty-state">Todavía no hay materiales en este curso.</p>
+{% endif %}
+
+<p><a href="{{ url_for('courses.detail', course_id=course.id) }}">← Volver al curso</a></p>
+{% endblock %}

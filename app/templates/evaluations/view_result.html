@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block title %}Resultado: {{ exam.title }}{% endblock %}
+
+{% block content %}
+<h1>Resultado: {{ exam.title }}</h1>
+
+{# ── Resumen de la nota ── #}
+<div class="grade-summary">
+    <div class="grade-score">{{ grade.score }}/{{ grade.total }}</div>
+    <div class="grade-percentage">{{ grade.percentage() }}%</div>
+    <div class="grade-label">
+        {% if grade.percentage() >= 70 %}
+            <span class="badge badge-enrolled">Aprobado</span>
+        {% else %}
+            <span class="badge badge-full">Desaprobado</span>
+        {% endif %}
+    </div>
+</div>
+
+{# ── Detalle de cada pregunta ── #}
+<h2>Detalle de respuestas</h2>
+
+{% for question in exam.questions %}
+    {% set answer = answers.get(question.id) %}
+    <div class="question-result {% if answer and answer.is_correct() %}result-correct{% else %}result-wrong{% endif %}">
+        <h3 class="question-number">Pregunta {{ loop.index }}</h3>
+        <p class="question-text">{{ question.text }}</p>
+
+        <div class="question-options">
+            {% for letter, option in [('a', question.option_a), ('b', question.option_b), ('c', question.option_c), ('d', question.option_d)] %}
+                <div class="option-result
+                    {% if letter == question.correct_option %}option-correct{% endif %}
+                    {% if answer and letter == answer.chosen_option and letter != question.correct_option %}option-wrong{% endif %}">
+                    <span class="option-letter">{{ letter|upper }}</span>
+                    {{ option }}
+                    {% if letter == question.correct_option %}
+                        <span class="result-icon">&#10003;</span>
+                    {% endif %}
+                    {% if answer and letter == answer.chosen_option and letter != question.correct_option %}
+                        <span class="result-icon wrong">&#10007;</span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+
+        {% if answer %}
+            <p class="answer-summary">Tu respuesta: <strong>{{ answer.chosen_option|upper }}</strong>
+                {% if answer.is_correct() %}
+                    — <span class="text-correct">Correcta</span>
+                {% else %}
+                    — <span class="text-wrong">Incorrecta</span> (la correcta era {{ question.correct_option|upper }})
+                {% endif %}
+            </p>
+        {% endif %}
+    </div>
+{% endfor %}
+
+<p><a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}">← Volver a evaluaciones</a></p>
+{% endblock %}

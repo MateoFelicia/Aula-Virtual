@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Editar: {{ course.title }}{% endblock %}
+
+{% block content %}
+<h1>Editar curso</h1>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="field">
+        {{ form.title.label }}
+        {{ form.title(size=50) }}
+        {% for error in form.title.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.description.label }}
+        {{ form.description(rows=5) }}
+        {% for error in form.description.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.capacity.label }}
+        {{ form.capacity() }}
+        {% for error in form.capacity.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+
+<p><a href="{{ url_for('courses.detail', course_id=course.id) }}">← Volver al curso</a></p>
+{% endblock %}

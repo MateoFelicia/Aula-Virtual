@@ -66,11 +66,261 @@ body {
 .alert-danger  { background: #f8d7da; color: #721c24; }
 .alert-info    { background: #d1ecf1; color: #0c5460; }
 
-button[type="submit"] {
+button[type="submit"], .btn {
     background: #1f3d2b;
     color: white;
     border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 4px;
     cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
 }
+
+.btn-danger { background: #b00020; }
+.btn-danger:hover { background: #8a0019; }
+
+.btn-outline {
+    background: transparent;
+    color: #b00020;
+    border: 1px solid #b00020;
+}
+.btn-outline:hover { background: #f8d7da; }
+
+.course-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.course-card {
+    background: white;
+    border-radius: 6px;
+    padding: 1.25rem;
+    border: 1px solid #e0e0e0;
+}
+
+.course-card h3 { margin: 0 0 0.5rem; }
+.course-card h3 a { color: #1a1a1a; text-decoration: none; }
+.course-card h3 a:hover { text-decoration: underline; }
+
+.course-meta {
+    font-size: 0.85rem;
+    color: #666;
+    margin: 0.5rem 0;
+}
+
+.course-description {
+    margin: 0.75rem 0;
+}
+
+.course-actions {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-full { background: #f8d7da; color: #721c24; }
+.badge-enrolled { background: #d4edda; color: #155724; }
+
+.inline-form { display: inline; }
+
+.field textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+    resize: vertical;
+}
+
+.alert-warning { background: #fff3cd; color: #856404; }
+
+.add-student-form {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.add-student-form h3 { margin: 0 0 0.75rem; font-size: 1rem; }
+
+.field-inline {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+}
+
+.field-inline input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+.students-table th,
+.students-table td {
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.students-table th {
+    background: #f9f9f9;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.students-table tr:last-child td { border-bottom: none; }
+
+.btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
+
+.empty-state { color: #888; font-style: italic; }
+
+.navbar-links { display: flex; align-items: center; gap: 0.5rem; }
+
+.course-nav {
+    margin: 1rem 0;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.materials-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.material-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.material-info {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.material-icon { font-size: 1.5rem; }
+.material-desc { margin: 0.25rem 0; font-size: 0.9rem; color: #555; }
+.material-meta { font-size: 0.8rem; color: #888; }
+.material-actions { display: flex; gap: 0.5rem; align-items: center; }
+
+.material-card h3 { margin: 0; font-size: 1rem; }
+
+.field-label { font-weight: 600; display: block; margin-bottom: 0.25rem; }
+.radio-label { display: inline-block; margin-right: 1rem; }
+.field-help { display: block; font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
+
+.exams-list {
+    display: grid;
+    gap: 0.75rem;
+}
+
+.exam-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.exam-info { flex: 1; }
+.exam-info h3 { margin: 0 0 0.25rem; }
+.exam-desc { margin: 0.25rem 0; font-size: 0.9rem; color: #555; }
+.exam-meta { font-size: 0.85rem; color: #666; margin-top: 0.25rem; }
+.exam-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+
+.question-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.question-number { margin: 0 0 0.5rem; font-size: 0.85rem; color: #888; }
+.question-text { font-size: 1.05rem; font-weight: 600; margin: 0 0 0.75rem; }
+
+.question-options {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.option-label, .option-result {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.option-label:hover { background: #f9f9f9; }
+
+.option-letter {
+    font-weight: 700;
+    width: 1.5rem;
+    text-align: center;
+}
+
+.grade-summary {
+    text-align: center;
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.grade-score { font-size: 2.5rem; font-weight: 700; }
+.grade-percentage { font-size: 1.2rem; color: #666; margin: 0.25rem 0 0.75rem; }
+
+.question-result {
+    border-radius: 6px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    border: 2px solid;
+}
+
+.result-correct { border-color: #28a745; background: #f0fff4; }
+.result-wrong { border-color: #b00020; background: #fff5f5; }
+
+.option-correct { background: #d4edda; border-color: #28a745; }
+.option-wrong { background: #f8d7da; border-color: #b00020; text-decoration: line-through; }
+
+.result-icon { margin-left: auto; font-weight: 700; }
+.result-icon.wrong { color: #b00020; }
+
+.text-correct { color: #28a745; font-weight: 600; }
+.text-wrong { color: #b00020; font-weight: 600; }
+
+.answer-summary { font-size: 0.9rem; margin-top: 0.5rem; }

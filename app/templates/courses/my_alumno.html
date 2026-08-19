@@ -1,13 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Cursos{% endblock %}
+{% block title %}Mis cursos{% endblock %}
 
 {% block content %}
-<div style="display:flex; justify-content:space-between; align-items:center;">
-    <h1>Cursos</h1>
-    {% if current_user.is_profesor() %}
-        <a href="{{ url_for('courses.create') }}" class="btn">+ Nuevo curso</a>
-    {% endif %}
-</div>
+<h1>Mis cursos</h1>
 
 {% if courses %}
     <div class="course-grid">
@@ -21,16 +16,19 @@
 
                 <div class="course-meta">
                     <span>Prof: {{ course.instructor.first_name }} {{ course.instructor.last_name }}</span>
-                    <span>{{ course.enrolled_count() }}{% if course.capacity %}/{{ course.capacity }}{% endif %} alumnos</span>
                 </div>
 
-                {% if course.is_full() %}
-                    <span class="badge badge-full">Lleno</span>
-                {% endif %}
+                <div class="course-actions">
+                    <form method="POST" action="{{ url_for('courses.unenroll', course_id=course.id) }}" class="inline-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <button type="submit" class="btn btn-outline">Desinscribirme</button>
+                    </form>
+                </div>
             </div>
         {% endfor %}
     </div>
 {% else %}
-    <p>Todavía no hay cursos cargados.</p>
+    <p>No estás inscripto en ningún curso todavía.</p>
+    <a href="{{ url_for('courses.index') }}" class="btn">Ver cursos disponibles</a>
 {% endif %}
 {% endblock %}

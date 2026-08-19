@@ -1,7 +1,7 @@
 # app/__init__.py
 from flask import Flask, redirect, url_for
 from app.config import config
-from app.extensions import db, login_manager, migrate
+from app.extensions import db, login_manager, migrate, csrf
 
 
 def create_app(config_name='development'):
@@ -11,6 +11,7 @@ def create_app(config_name='development'):
     db.init_app(app)
     login_manager.init_app(app)
     migrate.init_app(app, db)
+    csrf.init_app(app)
 
     from app.modules.auth import auth_bp
     from app.modules.courses import courses_bp
