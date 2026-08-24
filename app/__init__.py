@@ -1,4 +1,6 @@
 # app/__init__.py
+import importlib
+
 from flask import Flask, redirect, url_for
 from app.config import config
 from app.extensions import db, login_manager, migrate, csrf
@@ -26,5 +28,16 @@ def create_app(config_name='development'):
     @app.route('/')
     def index():
         return redirect(url_for('courses.index'))
+
+    # BDD provisoria (SQLite): creamos las tablas automáticamente al
+    # arrancar en desarrollo, así no dependemos de MySQL ni de migraciones.
+    # Cuando haya MySQL real, se usa flask db upgrade y esto se puede sacar.
+    if config_name == 'development' and app.config['SQLALCHEMY_DATABASE_URI'].startswith('sqlite'):
+        with app.app_context():
+            # importlib no bindea nombres locales (un "import app.modules..."
+            # directo pisaría la variable local app con el módulo)
+            for modulo in ('auth', 'courses', 'content', 'evaluations'):
+                importlib.import_module(f'app.modules.{modulo}.models')
+            db.create_all()
 
     return app
