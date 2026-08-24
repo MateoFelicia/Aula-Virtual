@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}Reenviar confirmación{% endblock %}
+
+{% block content %}
+<h1>Reenviar email de confirmación</h1>
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="field">
+        {{ form.email.label }}
+        {{ form.email(size=32) }}
+        {% for error in form.email.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+<p><a href="{{ url_for('auth.login') }}">Volver a iniciar sesión</a></p>
+{% endblock %}

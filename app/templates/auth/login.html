@@ -21,4 +21,5 @@
     {{ form.submit() }}
 </form>
 <p>¿No tenés cuenta? <a href="{{ url_for('auth.register') }}">Registrate acá</a></p>
+<p>¿No te llegó el email de confirmación? <a href="{{ url_for('auth.resend_confirmation') }}">Reenvialo</a></p>
 {% endblock %}

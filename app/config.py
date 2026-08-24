@@ -19,12 +19,37 @@ class Config:
     UPLOAD_FOLDER = os.path.join(basedir, 'static', 'uploads')
     MAX_CONTENT_LENGTH = 16 * 1024 * 1024  # 16 MB máx por archivo subido
 
+    # BDD PROVISORIA: SQLite mientras MySQL no esté disponible.
+    # Vive en la raíz del proyecto (junto a run.py).
+    SQLITE_DEV_DB = 'sqlite:///' + os.path.join(
+        os.path.dirname(basedir), 'aula_virtual_dev.db'
+    )
+
+    # Confirmación de email
+    CONFIRM_TOKEN_MAX_AGE = 60 * 60 * 24  # el link vale 24 horas
+    # Base para armar los links que van en los emails (cambiar en .env
+    # cuando se deploye a un dominio real)
+    BASE_URL = os.environ.get('BASE_URL', 'http://localhost:5001')
+
+    # Envío de emails. Si MAIL_SERVER no está definido en el .env,
+    # no se manda nada real: el link de confirmación se imprime por consola.
+    MAIL_SERVER = os.environ.get('MAIL_SERVER')
+    MAIL_PORT = int(os.environ.get('MAIL_PORT', 587))
+    MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
+    MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
+    MAIL_DEFAULT_SENDER = os.environ.get(
+        'MAIL_DEFAULT_SENDER', 'no-reply@aula-virtual.local'
+    )
+    MAIL_USE_TLS = os.environ.get('MAIL_USE_TLS', 'true').lower() == 'true'
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    # Si DATABASE_URL está definida en el .env se usa esa (ej: MySQL),
+    # si no, cae al SQLite provisorio.
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL',
-        'mysql+pymysql://root:NuevaClave123!@localhost/aula_virtual_dev'
+        Config.SQLITE_DEV_DB
     )
 
 

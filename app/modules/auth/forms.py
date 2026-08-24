@@ -21,3 +21,8 @@ class RegisterForm(FlaskForm):
         validators=[DataRequired(), EqualTo('password', message='Las contraseñas no coinciden')]
     )
     submit = SubmitField('Registrarse')
+
+
+class ResendConfirmationForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Reenviar confirmación')
