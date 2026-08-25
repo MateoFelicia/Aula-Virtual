@@ -7,9 +7,9 @@ config entre desarrollo/testing/producción.
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # lee el archivo .env si existe
-
 basedir = os.path.abspath(os.path.dirname(__file__))
+project_root = os.path.abspath(os.path.join(basedir, '..'))
+load_dotenv(os.path.join(project_root, '.env'))
 
 
 class Config:
