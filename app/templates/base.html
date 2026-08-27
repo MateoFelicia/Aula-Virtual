@@ -1,4 +1,12 @@
 <!DOCTYPE html>
+<script>
+    let tema_guardado = localStorage.getItem('tema')
+    if(tema_guardado){
+        document.documentElement.dataset.theme = tema_guardado
+    } else {
+        document.documentElement.dataset.theme = 'light'
+    }
+</script>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -10,6 +18,7 @@
     <nav class="navbar">
         <a href="{{ url_for('courses.index') }}" class="navbar-brand">Aula Virtual</a>
         <div class="navbar-links">
+            <button id="theme-toggle" type="button" aria-label="Cambiar tema">🌙</button>
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('courses.my_courses') }}">Mis cursos</a>
                 <span>Hola, {{ current_user.first_name }}</span>
@@ -32,5 +41,26 @@
 
         {% block content %}{% endblock %}
     </main>
+    <script>
+        const switch_tema = document.getElementById('theme-toggle')
+        if (tema_guardado == 'dark'){
+                switch_tema.textContent = "☀️"
+            } else {
+                switch_tema.textContent = "🌙"
+            }
+
+        switch_tema.addEventListener("click", ()=>{
+            let tema_actual = document.documentElement.dataset.theme
+            if (tema_actual == 'dark'){
+                document.documentElement.dataset.theme = 'light'
+                switch_tema.textContent = "🌙"
+                localStorage.setItem('tema','light')
+            } else {
+                document.documentElement.dataset.theme = 'dark'
+                switch_tema.textContent = "☀️"
+                localStorage.setItem('tema','dark')
+            }
+        })
+    </script>
 </body>
 </html>

@@ -1,10 +1,88 @@
+/* ============================================
+   VARIABLES DE TEMA
+   ============================================ */
+:root {
+    /* Superficies */
+    --surface-0: #f5f5f5;
+    --surface-1: #ffffff;
+    --surface-2: #f9f9f9;
+
+    /* Texto */
+    --text-primary: #1a1a1a;
+    --text-secondary: #666666;
+    --text-muted: #888888;
+
+    /* Bordes */
+    --border-neutral: #e0e0e0;
+    --border-input: #cccccc;
+
+    /* Marca / acento */
+    --accent: #1f3d2b;
+    --accent-hover: #17301f;
+    --accent-text: #ffffff;
+
+    /* Semántica */
+    --success-bg: #d4edda;
+    --success-text: #155724;
+
+    --danger-bg: #f8d7da;
+    --danger-text: #721c24;
+    --danger-solid: #b00020;
+    --danger-solid-hover: #8a0019;
+
+    --warning-bg: #fff3cd;
+    --warning-text: #856404;
+
+    --info-bg: #d1ecf1;
+    --info-text: #0c5460;
+}
+
+[data-theme="dark"] {
+    /* Superficies */
+    --surface-0: #0f2418;
+    --surface-1: #16351f;
+    --surface-2: #1e4a2a;
+
+    /* Texto */
+    --text-primary: #ffffff;
+    --text-secondary: #8fa894;
+    --text-muted: #8fa894;
+
+    /* Bordes */
+    --border-neutral: #1a4025;
+    --border-input: #1a4025;
+
+    /* Marca */
+    --accent: #1e4a2a;
+    --accent-hover: #275a35;
+    --accent-text: #ffffff;
+
+    /* Semántica */
+    --success-bg: #1f3d22;
+    --success-text: #a8e6ac;
+
+    --danger-bg: #4a2020;
+    --danger-text: #f5b8b8;
+    --danger-solid: #e05252;
+    --danger-solid-hover: #c94040;
+
+    --warning-bg: #4a3a1c;
+    --warning-text: #f0d9a8;
+
+    --info-bg: #1c3640;
+    --info-text: #a8d4e0;
+}
+
+/* ============================================
+   BASE
+   ============================================ */
 * { box-sizing: border-box; }
 
 body {
     font-family: system-ui, sans-serif;
     margin: 0;
-    background: #f5f5f5;
-    color: #1a1a1a;
+    background: var(--surface-0);
+    color: var(--text-primary);
 }
 
 .navbar {
@@ -12,12 +90,12 @@ body {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background: #1f3d2b;
-    color: white;
+    background: var(--surface-1);
+    color: var(--text-primary);
 }
 
 .navbar a {
-    color: white;
+    color: var(--text-primary);
     text-decoration: none;
     margin-left: 1rem;
 }
@@ -47,12 +125,14 @@ body {
 .field input, .field select {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-input);
     border-radius: 4px;
+    background: var(--surface-1);
+    color: var(--text-primary);
 }
 
 .error {
-    color: #b00020;
+    color: var(--danger-solid);
     font-size: 0.85rem;
 }
 
@@ -62,13 +142,14 @@ body {
     margin-bottom: 1rem;
 }
 
-.alert-success { background: #d4edda; color: #155724; }
-.alert-danger  { background: #f8d7da; color: #721c24; }
-.alert-info    { background: #d1ecf1; color: #0c5460; }
+.alert-success { background: var(--success-bg); color: var(--success-text); }
+.alert-danger  { background: var(--danger-bg); color: var(--danger-text); }
+.alert-info    { background: var(--info-bg); color: var(--info-text); }
+.alert-warning { background: var(--warning-bg); color: var(--warning-text); }
 
 button[type="submit"], .btn {
-    background: #1f3d2b;
-    color: white;
+    background: var(--accent);
+    color: var(--accent-text);
     border: none;
     padding: 0.6rem 1.2rem;
     border-radius: 4px;
@@ -78,15 +159,19 @@ button[type="submit"], .btn {
     font-size: 0.9rem;
 }
 
-.btn-danger { background: #b00020; }
-.btn-danger:hover { background: #8a0019; }
+button[type="submit"]:hover, .btn:hover {
+    background: var(--accent-hover);
+}
+
+.btn-danger { background: var(--danger-solid); }
+.btn-danger:hover { background: var(--danger-solid-hover); }
 
 .btn-outline {
     background: transparent;
-    color: #b00020;
-    border: 1px solid #b00020;
+    color: var(--danger-solid);
+    border: 1px solid var(--danger-solid);
 }
-.btn-outline:hover { background: #f8d7da; }
+.btn-outline:hover { background: var(--surface-2); }
 
 .course-grid {
     display: grid;
@@ -95,19 +180,19 @@ button[type="submit"], .btn {
 }
 
 .course-card {
-    background: white;
+    background: var(--surface-1);
     border-radius: 6px;
     padding: 1.25rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-neutral);
 }
 
 .course-card h3 { margin: 0 0 0.5rem; }
-.course-card h3 a { color: #1a1a1a; text-decoration: none; }
+.course-card h3 a { color: var(--text-primary); text-decoration: none; }
 .course-card h3 a:hover { text-decoration: underline; }
 
 .course-meta {
     font-size: 0.85rem;
-    color: #666;
+    color: var(--text-secondary);
     margin: 0.5rem 0;
 }
 
@@ -130,25 +215,25 @@ button[type="submit"], .btn {
     font-weight: 600;
 }
 
-.badge-full { background: #f8d7da; color: #721c24; }
-.badge-enrolled { background: #d4edda; color: #155724; }
+.badge-full { background: var(--danger-bg); color: var(--danger-text); }
+.badge-enrolled { background: var(--success-bg); color: var(--success-text); }
 
 .inline-form { display: inline; }
 
 .field textarea {
     width: 100%;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-input);
     border-radius: 4px;
     font-family: inherit;
     resize: vertical;
+    background: var(--surface-1);
+    color: var(--text-primary);
 }
 
-.alert-warning { background: #fff3cd; color: #856404; }
-
 .add-student-form {
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-1);
+    border: 1px solid var(--border-neutral);
     border-radius: 6px;
     padding: 1.25rem;
     margin-bottom: 1.5rem;
@@ -165,28 +250,31 @@ button[type="submit"], .btn {
 .field-inline input[type="text"] {
     flex: 1;
     padding: 0.5rem;
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-input);
     border-radius: 4px;
+    background: var(--surface-1);
+    color: var(--text-primary);
 }
 
 .students-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
+    background: var(--surface-1);
     border-radius: 6px;
     overflow: hidden;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-neutral);
 }
 
 .students-table th,
 .students-table td {
     padding: 0.65rem 0.75rem;
     text-align: left;
-    border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid var(--border-neutral);
+    color: var(--text-primary);
 }
 
 .students-table th {
-    background: #f9f9f9;
+    background: var(--surface-2);
     font-weight: 600;
     font-size: 0.85rem;
 }
@@ -195,7 +283,7 @@ button[type="submit"], .btn {
 
 .btn-sm { padding: 0.3rem 0.7rem; font-size: 0.8rem; }
 
-.empty-state { color: #888; font-style: italic; }
+.empty-state { color: var(--text-muted); font-style: italic; }
 
 .navbar-links { display: flex; align-items: center; gap: 0.5rem; }
 
@@ -211,8 +299,8 @@ button[type="submit"], .btn {
 }
 
 .material-card {
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-1);
+    border: 1px solid var(--border-neutral);
     border-radius: 6px;
     padding: 1rem 1.25rem;
     display: flex;
@@ -227,15 +315,15 @@ button[type="submit"], .btn {
 }
 
 .material-icon { font-size: 1.5rem; }
-.material-desc { margin: 0.25rem 0; font-size: 0.9rem; color: #555; }
-.material-meta { font-size: 0.8rem; color: #888; }
+.material-desc { margin: 0.25rem 0; font-size: 0.9rem; color: var(--text-secondary); }
+.material-meta { font-size: 0.8rem; color: var(--text-muted); }
 .material-actions { display: flex; gap: 0.5rem; align-items: center; }
 
 .material-card h3 { margin: 0; font-size: 1rem; }
 
 .field-label { font-weight: 600; display: block; margin-bottom: 0.25rem; }
 .radio-label { display: inline-block; margin-right: 1rem; }
-.field-help { display: block; font-size: 0.8rem; color: #888; margin-top: 0.25rem; }
+.field-help { display: block; font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem; }
 
 .exams-list {
     display: grid;
@@ -243,8 +331,8 @@ button[type="submit"], .btn {
 }
 
 .exam-card {
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-1);
+    border: 1px solid var(--border-neutral);
     border-radius: 6px;
     padding: 1rem 1.25rem;
     display: flex;
@@ -254,19 +342,19 @@ button[type="submit"], .btn {
 
 .exam-info { flex: 1; }
 .exam-info h3 { margin: 0 0 0.25rem; }
-.exam-desc { margin: 0.25rem 0; font-size: 0.9rem; color: #555; }
-.exam-meta { font-size: 0.85rem; color: #666; margin-top: 0.25rem; }
+.exam-desc { margin: 0.25rem 0; font-size: 0.9rem; color: var(--text-secondary); }
+.exam-meta { font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem; }
 .exam-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
 
 .question-card {
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-1);
+    border: 1px solid var(--border-neutral);
     border-radius: 6px;
     padding: 1.25rem;
     margin-bottom: 1rem;
 }
 
-.question-number { margin: 0 0 0.5rem; font-size: 0.85rem; color: #888; }
+.question-number { margin: 0 0 0.5rem; font-size: 0.85rem; color: var(--text-muted); }
 .question-text { font-size: 1.05rem; font-weight: 600; margin: 0 0 0.75rem; }
 
 .question-options {
@@ -279,12 +367,12 @@ button[type="submit"], .btn {
     align-items: center;
     gap: 0.5rem;
     padding: 0.5rem 0.75rem;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--border-neutral);
     border-radius: 4px;
     cursor: pointer;
 }
 
-.option-label:hover { background: #f9f9f9; }
+.option-label:hover { background: var(--surface-2); }
 
 .option-letter {
     font-weight: 700;
@@ -294,15 +382,15 @@ button[type="submit"], .btn {
 
 .grade-summary {
     text-align: center;
-    background: white;
-    border: 1px solid #e0e0e0;
+    background: var(--surface-2);
+    border: 1px solid var(--border-neutral);
     border-radius: 6px;
     padding: 2rem;
     margin-bottom: 1.5rem;
 }
 
 .grade-score { font-size: 2.5rem; font-weight: 700; }
-.grade-percentage { font-size: 1.2rem; color: #666; margin: 0.25rem 0 0.75rem; }
+.grade-percentage { font-size: 1.2rem; color: var(--text-secondary); margin: 0.25rem 0 0.75rem; }
 
 .question-result {
     border-radius: 6px;
@@ -311,16 +399,28 @@ button[type="submit"], .btn {
     border: 2px solid;
 }
 
-.result-correct { border-color: #28a745; background: #f0fff4; }
-.result-wrong { border-color: #b00020; background: #fff5f5; }
+.result-correct { border-color: var(--success-text); background: var(--success-bg); }
+.result-wrong { border-color: var(--danger-solid); background: var(--danger-bg); }
 
-.option-correct { background: #d4edda; border-color: #28a745; }
-.option-wrong { background: #f8d7da; border-color: #b00020; text-decoration: line-through; }
+.option-correct { background: var(--success-bg); border-color: var(--success-text); }
+.option-wrong { background: var(--danger-bg); border-color: var(--danger-solid); text-decoration: line-through; }
 
 .result-icon { margin-left: auto; font-weight: 700; }
-.result-icon.wrong { color: #b00020; }
+.result-icon.wrong { color: var(--danger-solid); }
 
-.text-correct { color: #28a745; font-weight: 600; }
-.text-wrong { color: #b00020; font-weight: 600; }
+.text-correct { color: var(--success-text); font-weight: 600; }
+.text-wrong { color: var(--danger-text); font-weight: 600; }
 
 .answer-summary { font-size: 0.9rem; margin-top: 0.5rem; }
+
+#theme-toggle{
+    background: var(--accent);
+    color: var(--text-primary);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 0.9rem;
+}
