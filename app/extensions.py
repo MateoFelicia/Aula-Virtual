@@ -1,4 +1,4 @@
-# app/extensions.py
+# Extensiones de Flask
 """
 Instancias de extensiones de Flask, desacopladas de la app.
 Se inicializan de verdad recién en create_app() (app/__init__.py).

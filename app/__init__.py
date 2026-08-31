@@ -1,4 +1,4 @@
-# app/__init__.py
+#Creando y configurando la aplicación Flask
 from flask import Flask, redirect, url_for
 from app.config import config
 from app.extensions import db, login_manager, migrate, csrf

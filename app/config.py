@@ -1,4 +1,4 @@
-# app/config.py
+# Configuración por entorno
 """
 Configuración por entorno. Usamos el patrón de clases que
 recomienda la propia documentación de Flask para no repetir
