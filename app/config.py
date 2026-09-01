@@ -7,9 +7,9 @@ config entre desarrollo/testing/producción.
 import os
 from dotenv import load_dotenv
 
-load_dotenv()  # lee el archivo .env si existe
-
 basedir = os.path.abspath(os.path.dirname(__file__))
+project_root = os.path.abspath(os.path.join(basedir, '..'))
+load_dotenv(os.path.join(project_root, '.env'))
 
 
 class Config:
@@ -24,7 +24,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL',
-        'mysql+pymysql://root:NuevaClave123!@localhost/aula_virtual_dev'
+        'mysql+pymysql://root:Alvlgeddl09*@localhost/Aula_Virtual'
     )
 
 

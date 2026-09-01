@@ -1,4 +1,5 @@
-from app import create_app 
+# run.py
+from app import create_app #Accede a la carpeta por dinamismo
 
 app = create_app()
 

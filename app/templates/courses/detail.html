@@ -29,7 +29,7 @@
         {# El profesorDueño puede editar, eliminar y ver alumnos #}
         <div class="course-actions">
             <a href="{{ url_for('courses.students', course_id=course.id) }}" class="btn">Ver alumnos</a>
-            <a href="{{ url_for('courses.edit', course_id=course.id) }}" class="btn btn-outline">Editar</a>
+            <a href="{{ url_for('courses.edit', course_id=course.id) }}" class="btn">Editar</a>
 
             <form method="POST" action="{{ url_for('courses.delete', course_id=course.id) }}" class="inline-form"
                   onsubmit="return confirm('¿Seguro que querés eliminar este curso?');">

@@ -1,0 +1,5 @@
+# Se hace la función macro, sirve para no tener que repetir for en auntetificación
+{% macro render_field(field) %}
+    {{ field.label }} {{ field(**kwargs) }}
+    {% for error in field.errors %}<span class="error">{{ error }}</span>{% endfor %}
+{% endmacro %}

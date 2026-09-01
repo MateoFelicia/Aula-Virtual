@@ -1,21 +1,18 @@
 {% extends "base.html" %}
+{% import "_formhelpers.html" as forms %} #Este es el form de auntetificación, "forms"
 {% block title %}Ingresar{% endblock %}
 
 {% block content %}
 <h1>Iniciar sesión</h1>
 <form method="POST" novalidate>
-    {{ form.hidden_tag() }}
+    {{ form.hidden_tag() }} #Este es el form que se hace para conseguir los valores, "form"
 
     <div class="field">
-        {{ form.email.label }}
-        {{ form.email(size=32) }}
-        {% for error in form.email.errors %}<span class="error">{{ error }}</span>{% endfor %}
+        {{ forms.render_field(form.email, size=32) }}
     </div>
 
     <div class="field">
-        {{ form.password.label }}
-        {{ form.password(size=32) }}
-        {% for error in form.password.errors %}<span class="error">{{ error }}</span>{% endfor %}
+        {{ forms.render_field(form.password, size=32) }}
     </div>
 
     {{ form.submit() }}
