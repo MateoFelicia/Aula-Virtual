@@ -1,13 +1,6 @@
 # app/modules/courses/forms.py
 """
 Formularios del módulo de cursos.
-
-Usamos Flask-WTF (WTForms) para validar los datos del formulario
-del lado del servidor. Cada campo tiene validators que checkean
-que no vengan vacíos, que tengan cierta longitud, etc.
-
-Los forms se instancian en la ruta (routes.py) y se pasan al template.
-En el template se renderizan con {{ form.field.label }} y {{ form.field() }}.
 """
 from flask_wtf import FlaskForm
 from wtforms import StringField, TextAreaField, IntegerField, SubmitField
@@ -15,13 +8,6 @@ from wtforms.validators import DataRequired, Length, Optional, NumberRange, Emai
 
 
 class CourseForm(FlaskForm):
-    """
-    Formulario para crear o editar un curso.
-
-    Se usa tanto en la ruta POST /courses/new (crear)
-    como en POST /courses/<id>/edit (editar).
-    En edición se precargan los valores con obj=curso.
-    """
     title = StringField(
         'Título del curso',
         validators=[
@@ -46,13 +32,18 @@ class CourseForm(FlaskForm):
     submit = SubmitField('Guardar curso')
 
 
-class AddStudentForm(FlaskForm):
-    """
-    Formulario para que un profesor agregue un alumno a su curso por email.
+class JoinCourseForm(FlaskForm):
+    code = StringField(
+        'Código del curso',
+        validators=[
+            DataRequired(message='Ingresá el código del curso'),
+            Length(max=10)
+        ]
+    )
+    submit = SubmitField('Unirse al curso')
 
-    El profesor escribe el email del alumno, se busca en la tabla users,
-    y si existe y es alumno, se crea la inscripción.
-    """
+
+class AddStudentForm(FlaskForm):
     email = StringField(
         'Email del alumno',
         validators=[

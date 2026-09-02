@@ -1,6 +1,6 @@
 # app/modules/auth/forms.py
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SelectField, SubmitField
+from wtforms import StringField, PasswordField, SubmitField
 from wtforms.validators import DataRequired, Email, EqualTo, Length
 
 
@@ -14,7 +14,6 @@ class RegisterForm(FlaskForm):
     first_name = StringField('Nombre', validators=[DataRequired()])
     last_name = StringField('Apellido', validators=[DataRequired()])
     email = StringField('Email', validators=[DataRequired(), Email()])
-    role = SelectField('Rol', choices=[('alumno', 'Alumno'), ('profesor', 'Profesor')])
     password = PasswordField('Contraseña', validators=[DataRequired(), Length(min=6)])
     confirm_password = PasswordField(
         'Confirmar contraseña',

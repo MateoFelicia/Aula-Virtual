@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Crear colegio{% endblock %}
+
+{% block content %}
+<h1>Crear colegio</h1>
+
+<form method="POST" novalidate>
+    {{ form.hidden_tag() }}
+
+    <div class="field">
+        {{ form.name.label }}
+        {{ form.name(size=50) }}
+        {% for error in form.name.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    <div class="field">
+        {{ form.description.label }}
+        {{ form.description(rows=4) }}
+        {% for error in form.description.errors %}<span class="error">{{ error }}</span>{% endfor %}
+    </div>
+
+    {{ form.submit() }}
+</form>
+
+<p><a href="{{ url_for('schools.index') }}">← Volver a mis colegios</a></p>
+{% endblock %}

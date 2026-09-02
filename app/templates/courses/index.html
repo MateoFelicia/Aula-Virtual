@@ -1,12 +1,17 @@
 {% extends "base.html" %}
-{% block title %}Cursos{% endblock %}
+{% block title %}Cursos - {{ school.name }}{% endblock %}
 
 {% block content %}
 <div style="display:flex; justify-content:space-between; align-items:center;">
-    <h1>Cursos</h1>
-    {% if current_user.is_profesor() %}
-        <a href="{{ url_for('courses.create') }}" class="btn">+ Nuevo curso</a>
-    {% endif %}
+    <h1>Cursos — {{ school.name }}</h1>
+    <div>
+        {% if school_member.role in ['admin', 'profesor'] %}
+            <a href="{{ url_for('courses.create_in_school', school_id=school.id) }}" class="btn">+ Nuevo curso</a>
+        {% endif %}
+        {% if school_member.role == 'alumno' %}
+            <a href="{{ url_for('courses.join') }}" class="btn">Unirse con código</a>
+        {% endif %}
+    </div>
 </div>
 
 {% if courses %}
@@ -20,7 +25,9 @@
                 {% endif %}
 
                 <div class="course-meta">
-                    <span>Prof: {{ course.instructor.first_name }} {{ course.instructor.last_name }}</span>
+                    {% if school_member.role in ['admin', 'profesor'] %}
+                        <span>Código: <strong>{{ course.course_code }}</strong></span>
+                    {% endif %}
                     <span>{{ course.enrolled_count() }}{% if course.capacity %}/{{ course.capacity }}{% endif %} alumnos</span>
                 </div>
 
@@ -31,6 +38,12 @@
         {% endfor %}
     </div>
 {% else %}
-    <p>Todavía no hay cursos cargados.</p>
+    {% if school_member.role == 'alumno' %}
+        <p>Todavía no te uniste a ningún curso de este colegio. <a href="{{ url_for('courses.join') }}">Unite con el código de un curso</a>.</p>
+    {% else %}
+        <p>No hay cursos disponibles.</p>
+    {% endif %}
 {% endif %}
+
+<p><a href="{{ url_for('schools.detail', school_id=school.id) }}">← Volver al colegio</a></p>
 {% endblock %}

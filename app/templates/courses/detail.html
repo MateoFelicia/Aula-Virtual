@@ -4,60 +4,39 @@
 {% block content %}
 <h1>{{ course.title }}</h1>
 
-<div class="course-detail">
-    <p class="course-meta">
-        Profesor: <strong>{{ course.instructor.first_name }} {{ course.instructor.last_name }}</strong>
-        &middot;
-        Inscriptos: <strong>{{ course.enrolled_count() }}{% if course.capacity %}/{{ course.capacity }}{% endif %}</strong>
-    </p>
+{% if course.description %}
+    <p>{{ course.description }}</p>
+{% endif %}
 
-    {% if course.description %}
-        <div class="course-description">
-            <p>{{ course.description }}</p>
-        </div>
+<div class="course-meta">
+    {% if school_member.role in ['admin', 'profesor'] %}
+        <span>Código del curso: <strong>{{ course.course_code }}</strong></span>
     {% endif %}
-
-    {# ── Botones según el rol del usuario ── #}
-
-    {# Links de navegación del curso (visibles para todos los que acceden) #}
-    <div class="course-nav">
-        <a href="{{ url_for('content.list_materials', course_id=course.id) }}" class="btn btn-sm">Contenidos</a>
-        <a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}" class="btn btn-sm">Evaluaciones</a>
-    </div>
-
-    {% if current_user.is_profesor() and course.instructor_id == current_user.id %}
-        {# El profesorDueño puede editar, eliminar y ver alumnos #}
-        <div class="course-actions">
-            <a href="{{ url_for('courses.students', course_id=course.id) }}" class="btn">Ver alumnos</a>
-            <a href="{{ url_for('courses.edit', course_id=course.id) }}" class="btn">Editar</a>
-
-            <form method="POST" action="{{ url_for('courses.delete', course_id=course.id) }}" class="inline-form"
-                  onsubmit="return confirm('¿Seguro que querés eliminar este curso?');">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-            </form>
-        </div>
-
-    {% elif current_user.is_alumno() %}
-        {# El alumno puede inscribirse o desinscribirse #}
-        {% if course.is_enrolled(current_user) %}
-            <div class="course-actions">
-                <span class="badge badge-enrolled">Estás inscripto</span>
-                <form method="POST" action="{{ url_for('courses.unenroll', course_id=course.id) }}" class="inline-form">
-                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                    <button type="submit" class="btn btn-outline">Desinscribirme</button>
-                </form>
-            </div>
-        {% elif course.is_full() %}
-            <span class="badge badge-full">Curso lleno</span>
-        {% else %}
-            <form method="POST" action="{{ url_for('courses.enroll', course_id=course.id) }}">
-                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                <button type="submit" class="btn">Inscribirme</button>
-            </form>
-        {% endif %}
-    {% endif %}
+    <span>{{ course.enrolled_count() }}{% if course.capacity %}/{{ course.capacity }}{% endif %} alumnos</span>
+    <span>Colegio: <a href="{{ url_for('schools.detail', school_id=school.id) }}">{{ school.name }}</a></span>
 </div>
 
-<p><a href="{{ url_for('courses.index') }}">← Volver al listado</a></p>
+{% if course_member %}
+    <span class="badge badge-{{ course_member.role }}">Tu rol: {{ course_member.role }}</span>
+{% endif %}
+
+{% if school_member.role in ['admin', 'profesor'] %}
+    <div style="margin: 1rem 0;">
+        <a href="{{ url_for('courses.edit', course_id=course.id) }}" class="btn">Editar curso</a>
+        <a href="{{ url_for('courses.students', course_id=course.id) }}" class="btn">Ver alumnos</a>
+        <a href="{{ url_for('content.list_materials', course_id=course.id) }}" class="btn">Materiales</a>
+        <a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}" class="btn">Evaluaciones</a>
+        <form method="POST" action="{{ url_for('courses.delete', course_id=course.id) }}" style="display:inline;" onsubmit="return confirm('¿Eliminar este curso y todo su contenido?')">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-danger">Eliminar curso</button>
+        </form>
+    </div>
+{% elif course_member and course_member.role == 'alumno' %}
+    <div style="margin: 1rem 0;">
+        <a href="{{ url_for('content.list_materials', course_id=course.id) }}" class="btn">Materiales</a>
+        <a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}" class="btn">Evaluaciones</a>
+    </div>
+{% endif %}
+
+<p><a href="{{ url_for('courses.list_in_school', school_id=school.id) }}">← Volver a los cursos</a></p>
 {% endblock %}

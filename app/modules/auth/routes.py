@@ -1,6 +1,6 @@
 # app/modules/auth/routes.py
 from flask import render_template, redirect, url_for, flash
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 from . import auth_bp
 from .forms import LoginForm, RegisterForm
 from .services import AuthService
@@ -13,7 +13,7 @@ def login():
         user = AuthService.authenticate(form.email.data, form.password.data)
         if user:
             login_user(user)
-            return redirect(url_for('courses.index'))
+            return redirect(url_for('schools.index'))
         flash('Email o contraseña incorrectos', 'danger')
     return render_template('auth/login.html', form=form)
 
@@ -28,7 +28,6 @@ def register():
                 last_name=form.last_name.data,
                 email=form.email.data,
                 password=form.password.data,
-                role=form.role.data
             )
             flash('Cuenta creada con éxito. Ya podés iniciar sesión.', 'success')
             return redirect(url_for('auth.login'))

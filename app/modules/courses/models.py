@@ -2,11 +2,16 @@
 """
 Modelos del módulo de cursos.
 
-Course: representa un curso creado por un profesor.
-Enrollment: representa la inscripción de un alumno a un curso.
-  - unique_together en (course_id, student_id) evita que un alumno
-    se inscriba dos veces al mismo curso.
+Course: representa un curso dentro de un colegio.
+  - Pertenecen a un colegio (school_id).
+  - Se unen con código (course_code) estilo Classroom.
+  - No tienen un profesor fijo: los profesores del colegio acceden a todos los cursos.
+
+CourseMember: vincula un usuario con un curso y define su rol.
+  - profesor: puede gestionar el curso (materiales, evaluaciones).
+  - alumno: se inscribió con el código del curso.
 """
+import secrets
 from app.extensions import db
 from app.core.base_model import BaseModel
 
@@ -14,80 +19,99 @@ from app.core.base_model import BaseModel
 class Course(BaseModel):
     __tablename__ = 'courses'
 
-    # Título corto del curso (obligatorio)
-    title = db.Column(db.String(150), nullable=False)
-
-    # Descripción libre — puede quedarse vacía al crear y completarse después
-    description = db.Column(db.Text, nullable=True)
-
-    # Capacidad máxima de alumnos (NULL = sin límite)
-    capacity = db.Column(db.Integer, nullable=True)
-
-    # FK al usuario que creó el curso (debe ser profesor).
-    # backref='instructed_courses' me permite hacer course.instructor
-    # y también user.instructed_courses desde el lado del usuario.
-    instructor_id = db.Column(
+    school_id = db.Column(
         db.Integer,
-        db.ForeignKey('users.id'),
+        db.ForeignKey('schools.id'),
         nullable=False
     )
 
-    # Relación bidireccional: course.instructor devuelve el User
-    instructor = db.relationship('User', backref=db.backref('instructed_courses', lazy=True))
+    title = db.Column(db.String(150), nullable=False)
 
-    # Relación 1 a N: un curso tiene muchas inscripciones
-    enrollments = db.relationship('Enrollment', backref='course', lazy=True, cascade='all, delete-orphan')
+    description = db.Column(db.Text, nullable=True)
 
-    # Relación 1 a N: un curso tiene muchos materiales (módulo content)
-    # lazy='dynamic' porque pueden ser muchos y conviene paginar
-    materials = db.relationship('Material', backref='course', lazy='dynamic')
+    capacity = db.Column(db.Integer, nullable=True)
+
+    course_code = db.Column(db.String(10), unique=True, nullable=False, index=True)
+
+    members = db.relationship(
+        'CourseMember',
+        backref='course',
+        lazy=True,
+        cascade='all, delete-orphan'
+    )
+
+    materials = db.relationship(
+        'Material',
+        backref='course',
+        lazy='dynamic'
+    )
+
+    @staticmethod
+    def generate_code():
+        return secrets.token_urlsafe(5).upper()
+
+    def get_member(self, user):
+        return CourseMember.query.filter_by(
+            course_id=self.id,
+            user_id=user.id
+        ).first()
+
+    def is_member(self, user):
+        return self.get_member(user) is not None
+
+    def is_profesor(self, user):
+        member = self.get_member(user)
+        return member is not None and member.role == CourseMemberRole.PROFESOR
+
+    def is_alumno(self, user):
+        member = self.get_member(user)
+        return member is not None and member.role == CourseMemberRole.ALUMNO
 
     def is_full(self):
-        """Devuelve True si el curso alcanzó su capacidad máxima."""
         if self.capacity is None:
             return False
-        return len(self.enrollments) >= self.capacity
+        return self.enrolled_count() >= self.capacity
 
     def enrolled_count(self):
-        """Cantidad actual de alumnos inscriptos."""
-        return len(self.enrollments)
-
-    def is_enrolled(self, user):
-        """Devuelve True si el usuario dado está inscripto en este curso."""
-        return Enrollment.query.filter_by(
+        return CourseMember.query.filter_by(
             course_id=self.id,
-            student_id=user.id
-        ).first() is not None
+            role=CourseMemberRole.ALUMNO
+        ).count()
 
     def __repr__(self):
         return f'<Course {self.title}>'
 
 
-class Enrollment(BaseModel):
-    __tablename__ = 'enrollments'
+class CourseMemberRole:
+    PROFESOR = 'profesor'
+    ALUMNO = 'alumno'
 
-    # FK al curso al que se inscribe el alumno
+
+class CourseMember(BaseModel):
+    __tablename__ = 'course_members'
+
     course_id = db.Column(
         db.Integer,
         db.ForeignKey('courses.id'),
         nullable=False
     )
 
-    # FK al alumno que se inscribe
-    student_id = db.Column(
+    user_id = db.Column(
         db.Integer,
         db.ForeignKey('users.id'),
         nullable=False
     )
 
-    # Relación bidireccional: enrollment.student devuelve el User
-    student = db.relationship('User', backref=db.backref('enrollments', lazy=True))
+    role = db.Column(db.String(20), nullable=False, default=CourseMemberRole.ALUMNO)
 
-    # Evita inscripción duplicada: no puede haber dos filas con
-    # el mismo course_id + student_id en la tabla.
+    user = db.relationship(
+        'User',
+        backref=db.backref('course_memberships', lazy=True)
+    )
+
     __table_args__ = (
-        db.UniqueConstraint('course_id', 'student_id', name='uq_course_student'),
+        db.UniqueConstraint('course_id', 'user_id', name='uq_course_user'),
     )
 
     def __repr__(self):
-        return f'<Enrollment course={self.course_id} student={self.student_id}>'
+        return f'<CourseMember course={self.course_id} user={self.user_id} role={self.role}>'

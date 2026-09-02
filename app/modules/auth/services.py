@@ -7,7 +7,7 @@ class AuthService(BaseService):
     model = User
 
     @classmethod
-    def register(cls, first_name, last_name, email, password, role):
+    def register(cls, first_name, last_name, email, password):
         if User.query.filter_by(email=email).first():
             raise ValueError('Ya existe una cuenta con ese email')
 
@@ -22,7 +22,7 @@ class AuthService(BaseService):
 
     @classmethod
     def authenticate(cls, email, password):
-        user = User.query.filter_by(email=email).first()
+        user = User.query.filter_by(email=email).first() 
         if user and user.check_password(password):
             return user
         return None

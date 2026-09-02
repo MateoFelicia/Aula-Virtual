@@ -1,20 +1,15 @@
 {% extends "base.html" %}
-{% import "_formhelpers.html" as forms %} #Este es el form de auntetificación, "forms"
+{% import "_formhelpers.html" as forms %}
 {% block title %}Registrarse{% endblock %}
 
 {% block content %}
 <h1>Crear cuenta</h1>
 <form method="POST" novalidate>
-    {{ form.hidden_tag() }} #Este es el form que se hace para conseguir los valores, "form"
+    {{ form.hidden_tag() }}
 
     <div class="field">{{ forms.render_field(form.first_name) }}</div>
     <div class="field">{{ forms.render_field(form.last_name) }}</div>
     <div class="field">{{ forms.render_field(form.email) }}</div>
-
-    <div class="field">
-        {{ form.role.label }} {{ form.role() }}
-    </div>
-
     <div class="field">{{ forms.render_field(form.password) }}</div>
     <div class="field">{{ forms.render_field(form.confirm_password) }}</div>
 

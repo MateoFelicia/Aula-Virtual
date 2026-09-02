@@ -16,11 +16,12 @@
 </head>
 <body>
     <nav class="navbar">
-        <a href="{{ url_for('courses.index') }}" class="navbar-brand">Aula Virtual</a>
+        <a href="{{ url_for('schools.index') }}" class="navbar-brand">Aula Virtual</a>
         <div class="navbar-links">
             <button id="theme-toggle" type="button" aria-label="Cambiar tema">🌙</button>
             {% if current_user.is_authenticated %}
-                <a href="{{ url_for('courses.my_courses') }}">Mis cursos</a>
+                <a href="{{ url_for('schools.index') }}">Mis colegios</a>
+                <a href="{{ url_for('courses.join') }}">Unirse a curso</a>
                 <span>Hola, {{ current_user.first_name }}</span>
                 <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
             {% else %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Miembros - {{ school.name }}{% endblock %}
+
+{% block content %}
+<h1>Miembros de {{ school.name }}</h1>
+
+<div style="margin: 1rem 0;">
+    <h3>Agregar miembro</h3>
+    <form method="POST" action="{{ url_for('schools.add_member', school_id=school.id) }}" novalidate style="display:flex; gap:1rem; align-items:end;">
+        {{ form.hidden_tag() }}
+        <div class="field">
+            {{ form.email.label }}
+            {{ form.email(size=30, placeholder="email@ejemplo.com") }}
+            {% for error in form.email.errors %}<span class="error">{{ error }}</span>{% endfor %}
+        </div>
+        {{ form.submit() }}
+    </form>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Rol</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in members %}
+        <tr>
+            <td>{{ m.user.first_name }} {{ m.user.last_name }}</td>
+            <td>{{ m.user.email }}</td>
+            <td>
+                <span class="badge badge-{{ m.role }}">{{ m.role }}</span>
+            </td>
+            <td>
+                {% if m.user.id != current_user.id %}
+                    {% if m.role == 'alumno' %}
+                        <form method="POST" action="{{ url_for('schools.promote', school_id=school.id, user_id=m.user.id) }}" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-small">Promover a profesor</button>
+                        </form>
+                    {% elif m.role == 'profesor' %}
+                        <form method="POST" action="{{ url_for('schools.demote', school_id=school.id, user_id=m.user.id) }}" style="display:inline;">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-small">Degradar a alumno</button>
+                        </form>
+                    {% endif %}
+                    {% if m.role != 'admin' %}
+                        <form method="POST" action="{{ url_for('schools.remove_member', school_id=school.id, user_id=m.user.id) }}" style="display:inline;" onsubmit="return confirm('¿Quitar a este miembro del colegio?')">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn btn-small btn-danger">Quitar</button>
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <span class="badge">Tú</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p><a href="{{ url_for('schools.detail', school_id=school.id) }}">← Volver al colegio</a></p>
+{% endblock %}

@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}{{ school.name }}{% endblock %}
+
+{% block content %}
+<h1>{{ school.name }}</h1>
+
+{% if school.description %}
+    <p>{{ school.description }}</p>
+{% endif %}
+
+<div class="course-meta">
+    <span>Tu rol: <strong>{{ member.role }}</strong></span>
+    {% if member.role in ['admin', 'profesor'] %}
+        <span>Código: <strong>{{ school.code }}</strong></span>
+    {% endif %}
+    <span>{{ courses|length }} cursos</span>
+</div>
+
+{% if member.role in ['admin', 'profesor'] %}
+    <div style="margin: 1rem 0;">
+        <a href="{{ url_for('courses.create_in_school', school_id=school.id) }}" class="btn">+ Crear curso</a>
+    </div>
+{% endif %}
+
+{% if member.role == 'admin' %}
+    <div style="margin: 1rem 0;">
+        <a href="{{ url_for('schools.members', school_id=school.id) }}" class="btn">Gestionar miembros</a>
+        <form method="POST" action="{{ url_for('schools.rotate_code', school_id=school.id) }}" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn">Rotar código</button>
+        </form>
+    </div>
+{% endif %}
+
+<h2>Cursos</h2>
+{% if courses %}
+    <div class="course-grid">
+        {% for course in courses %}
+            <div class="course-card">
+                <h3><a href="{{ url_for('courses.detail', course_id=course.id) }}">{{ course.title }}</a></h3>
+                {% if course.description %}
+                    <p>{{ course.description[:100] }}{% if course.description|length > 100 %}...{% endif %}</p>
+                {% endif %}
+                <div class="course-meta">
+                    {% if member.role in ['admin', 'profesor'] %}
+                        <span>Código: <strong>{{ course.course_code }}</strong></span>
+                    {% endif %}
+                    <span>{{ course.enrolled_count() }}{% if course.capacity %}/{{ course.capacity }}{% endif %} alumnos</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    {% if member.role == 'alumno' %}
+        <p>Todavía no te uniste a ningún curso de este colegio. <a href="{{ url_for('courses.join') }}">Unite con el código de un curso</a>.</p>
+    {% else %}
+        <p>No hay cursos en este colegio todavía.</p>
+    {% endif %}
+{% endif %}
+
+<p><a href="{{ url_for('schools.index') }}">← Volver a mis colegios</a></p>
+{% endblock %}

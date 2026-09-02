@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Mis colegios{% endblock %}
+
+{% block content %}
+<h1>Elegí un colegio</h1>
+
+<div class="course-grid">
+    {% for m in memberships %}
+        <div class="course-card">
+            <h3><a href="{{ url_for('courses.list_in_school', school_id=m.school.id) }}">{{ m.school.name }}</a></h3>
+            <div class="course-meta">
+                <span>Tu rol: <strong>{{ m.role }}</strong></span>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}

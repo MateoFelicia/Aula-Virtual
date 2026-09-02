@@ -217,6 +217,29 @@ button[type="submit"]:hover, .btn:hover {
 
 .badge-full { background: var(--danger-bg); color: var(--danger-text); }
 .badge-enrolled { background: var(--success-bg); color: var(--success-text); }
+.badge-admin { background: #6f42c1; color: #fff; }
+.badge-profesor { background: var(--info-bg); color: var(--info-text); }
+.badge-alumno { background: var(--success-bg); color: var(--success-text); }
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--surface-1);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--border-neutral);
+}
+.table th, .table td {
+    padding: 0.65rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-neutral);
+}
+.table th {
+    background: var(--surface-2);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+.table tr:last-child td { border-bottom: none; }
 
 .inline-form { display: inline; }
 

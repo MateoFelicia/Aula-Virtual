@@ -4,7 +4,7 @@
 {% block content %}
 <h1>Evaluaciones de "{{ course.title }}"</h1>
 
-{% if current_user.is_profesor() and course.instructor_id == current_user.id %}
+{% if school_member.role in ['admin', 'profesor'] %}
     <p>
         <a href="{{ url_for('evaluations.create_exam', course_id=course.id) }}" class="btn">+ Crear examen</a>
     </p>
@@ -30,8 +30,7 @@
                 </div>
 
                 <div class="exam-actions">
-                    {% if current_user.is_profesor() and course.instructor_id == current_user.id %}
-                        {# Profesor: ve notas y puede agregar preguntas #}
+                    {% if school_member.role in ['admin', 'profesor'] %}
                         <a href="{{ url_for('evaluations.add_question', exam_id=exam.id) }}" class="btn btn-sm">+ Pregunta</a>
                         <a href="{{ url_for('evaluations.view_grades', exam_id=exam.id) }}" class="btn btn-sm">Notas</a>
                         <form method="POST" action="{{ url_for('evaluations.delete_exam', exam_id=exam.id) }}" class="inline-form"
@@ -40,8 +39,7 @@
                             <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                         </form>
 
-                    {% elif current_user.is_alumno() %}
-                        {# Alumno: ve si ya rindió o puede rendir #}
+                    {% elif course_member and course_member.role == 'alumno' %}
                         {% if exam.has_been_taken_by(current_user) %}
                             {% set grade = exam.get_grade_for(current_user) %}
                             <span class="badge badge-enrolled">Nota: {{ grade.score }}/{{ grade.total }} ({{ grade.percentage() }}%)</span>

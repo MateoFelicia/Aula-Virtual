@@ -1,8 +1,8 @@
 {% extends "base.html" %}
-{% block title %}Nuevo curso{% endblock %}
+{% block title %}Crear curso — {{ school.name }}{% endblock %}
 
 {% block content %}
-<h1>Crear curso</h1>
+<h1>Crear curso en {{ school.name }}</h1>
 
 <form method="POST" novalidate>
     {{ form.hidden_tag() }}
@@ -28,5 +28,5 @@
     {{ form.submit() }}
 </form>
 
-<p><a href="{{ url_for('courses.index') }}">← Volver al listado</a></p>
+<p><a href="{{ url_for('courses.list_in_school', school_id=school.id) }}">← Volver a los cursos</a></p>
 {% endblock %}

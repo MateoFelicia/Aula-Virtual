@@ -4,8 +4,7 @@
 {% block content %}
 <h1>Contenidos de "{{ course.title }}"</h1>
 
-{# Solo el profesorDueño puede subir material #}
-{% if current_user.is_profesor() and course.instructor_id == current_user.id %}
+{% if school_member.role in ['admin', 'profesor'] %}
     <p>
         <a href="{{ url_for('content.upload', course_id=course.id) }}" class="btn">+ Subir material</a>
     </p>
@@ -16,12 +15,11 @@
         {% for material in materials %}
             <div class="material-card">
                 <div class="material-info">
-                    {# Icono según el tipo de material #}
                     <span class="material-icon">
                         {% if material.material_type == 'file' %}
-                            &#128196;  {# icono de archivo #}
+                            &#128196;
                         {% else %}
-                            &#128279;  {# icono de enlace #}
+                            &#128279;
                         {% endif %}
                     </span>
 
@@ -45,8 +43,7 @@
                         <a href="{{ material.external_url }}" target="_blank" class="btn btn-sm">Abrir enlace</a>
                     {% endif %}
 
-                    {# Solo el profesorDueño puede eliminar #}
-                    {% if current_user.is_profesor() and course.instructor_id == current_user.id %}
+                    {% if school_member.role in ['admin', 'profesor'] %}
                         <form method="POST" action="{{ url_for('content.delete', material_id=material.id) }}" class="inline-form"
                               onsubmit="return confirm('¿Eliminar este material?');">
                             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

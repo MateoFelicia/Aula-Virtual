@@ -1,61 +1,47 @@
 {% extends "base.html" %}
-{% block title %}Alumnos: {{ course.title }}{% endblock %}
+{% block title %}Alumnos — {{ course.title }}{% endblock %}
 
 {% block content %}
 <h1>Alumnos de "{{ course.title }}"</h1>
 
-<p class="course-meta">
-    Inscriptos: <strong>{{ enrollments|length }}{% if course.capacity %}/{{ course.capacity }}{% endif %}</strong>
-</p>
-
-{# ── Formulario para agregar un alumno por email ── #}
-<div class="add-student-form">
+<div style="margin: 1rem 0;">
     <h3>Agregar alumno</h3>
-    <form method="POST" action="{{ url_for('courses.add_student', course_id=course.id) }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-        <div class="field-inline">
-            {{ form.email(placeholder="alumno@ejemplo.com") }}
+    <form method="POST" action="{{ url_for('courses.add_student', course_id=course.id) }}" novalidate style="display:flex; gap:1rem; align-items:end;">
+        {{ form.hidden_tag() }}
+        <div class="field">
+            {{ form.email.label }}
+            {{ form.email(size=30, placeholder="alumno@email.com") }}
             {% for error in form.email.errors %}<span class="error">{{ error }}</span>{% endfor %}
-            {{ form.submit() }}
         </div>
+        {{ form.submit() }}
     </form>
 </div>
 
-{# ── Lista de alumnos inscriptos ── #}
-{% if enrollments %}
-    <table class="students-table">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Email</th>
-                <th>Inscripto</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for enrollment in enrollments %}
-                <tr>
-                    <td>{{ enrollment.student.first_name }}</td>
-                    <td>{{ enrollment.student.last_name }}</td>
-                    <td>{{ enrollment.student.email }}</td>
-                    <td>{{ enrollment.created_at.strftime('%d/%m/%Y') }}</td>
-                    <td>
-                        <form method="POST"
-                              action="{{ url_for('courses.remove_student', course_id=course.id, student_id=enrollment.student.id) }}"
-                              class="inline-form"
-                              onsubmit="return confirm('¿Quitar a {{ enrollment.student.first_name }} del curso?');">
-                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-                            <button type="submit" class="btn btn-danger btn-sm">Quitar</button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% else %}
-    <p class="empty-state">Todavía no hay alumnos inscriptos en este curso.</p>
-{% endif %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Inscripto</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in members %}
+        <tr>
+            <td>{{ m.user.first_name }} {{ m.user.last_name }}</td>
+            <td>{{ m.user.email }}</td>
+            <td>{{ m.created_at.strftime('%d/%m/%Y') }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('courses.remove_student', course_id=course.id, user_id=m.user.id) }}" style="display:inline;" onsubmit="return confirm('¿Quitar a este alumno del curso?')">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-small btn-danger">Quitar</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 <p><a href="{{ url_for('courses.detail', course_id=course.id) }}">← Volver al curso</a></p>
 {% endblock %}

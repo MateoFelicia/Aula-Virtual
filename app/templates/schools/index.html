@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Mis colegios{% endblock %}
+
+{% block content %}
+<div style="display:flex; justify-content:space-between; align-items:center;">
+    <h1>Mis colegios</h1>
+    <div>
+        <a href="{{ url_for('schools.create') }}" class="btn">+ Crear colegio</a>
+        <a href="{{ url_for('schools.join') }}" class="btn">Unirse a un colegio</a>
+    </div>
+</div>
+
+{% if schools %}
+    <div class="course-grid">
+        {% for school in schools %}
+            <div class="course-card">
+                <h3><a href="{{ url_for('schools.detail', school_id=school.id) }}">{{ school.name }}</a></h3>
+                {% if school.description %}
+                    <p>{{ school.description[:100] }}{% if school.description|length > 100 %}...{% endif %}</p>
+                {% endif %}
+                <div class="course-meta">
+                    <span>Código: <strong>{{ school.code }}</strong></span>
+                    <span>{{ school.courses|length }} cursos</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>No pertenecés a ningún colegio todavía.</p>
+{% endif %}
+{% endblock %}
