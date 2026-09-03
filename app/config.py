@@ -24,7 +24,7 @@ class DevelopmentConfig(Config):
     DEBUG = True
     SQLALCHEMY_DATABASE_URI = os.environ.get(
         'DATABASE_URL',
-        'mysql+pymysql://root:NuevaClave123!@localhost/aula_virtual_dev'
+        'mysql+pymysql://root:Alvlgeddl09*@localhost/aula_virtual'
     )
 
 

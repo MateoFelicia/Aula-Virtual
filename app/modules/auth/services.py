@@ -14,8 +14,7 @@ class AuthService(BaseService):
         user = User(
             first_name=first_name,
             last_name=last_name,
-            email=email,
-            role=role
+            email=email
         )
         user.set_password(password)
         return user.save()
