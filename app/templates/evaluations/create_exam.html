@@ -25,8 +25,8 @@
         {% for error in form.time_limit.errors %}<span class="error">{{ error }}</span>{% endfor %}
     </div>
 
-    {{ form.submit() }}
+    {{ form.submit(class="btn") }}
 </form>
 
-<p><a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}">← Volver a evaluaciones</a></p>
+<p><a class="btn" href="{{ url_for('evaluations.list_exams', course_id=course.id) }}">← Volver a evaluaciones</a></p>
 {% endblock %}

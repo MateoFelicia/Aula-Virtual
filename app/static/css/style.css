@@ -3,38 +3,31 @@
    ============================================ */
 :root {
     /* Superficies */
-    --surface-0: #f5f5f5;
-    --surface-1: #ffffff;
-    --surface-2: #f9f9f9;
+    --surface-0: #C9E8D4;   /* body */
+    --surface-1: #E8F5EC;   /* navbar */
+    --surface-2: #F5FAF6;   /* cards, add-student-form, students-table */
 
     /* Texto */
     --text-primary: #1a1a1a;
-    --text-secondary: #666666;
-    --text-muted: #888888;
-
-    /* Bordes */
-    --border-neutral: #e0e0e0;
-    --border-input: #cccccc;
+    --text-secondary: #666666;   /* course-meta, material-meta, exam-meta */
+    --text-muted: #888888;       /* empty-state, field-help */
 
     /* Marca / acento */
     --accent: #1f3d2b;
-    --accent-hover: #17301f;
+    --accent-hover: #142a1c;
     --accent-text: #ffffff;
 
-    /* Semántica */
-    --success-bg: #d4edda;
-    --success-text: #155724;
+    /* Bordes */
+    --border-neutral: #b8d9c2;   /* verde grisáceo sutil, entre surface-1 y surface-2 */
 
-    --danger-bg: #f8d7da;
-    --danger-text: #721c24;
+    /* Rojo para .btn-outline-danger, Desinscribirme, etc. */
     --danger-solid: #b00020;
-    --danger-solid-hover: #8a0019;
 
-    --warning-bg: #fff3cd;
-    --warning-text: #856404;
-
-    --info-bg: #d1ecf1;
-    --info-text: #0c5460;
+    /* Semánticos: fondo + texto */
+    --success-bg: #D4EDDA;   --success-text: #155724;
+    --info-bg:    #D1ECF1;   --info-text:    #0C5460;
+    --warning-bg: #FFF3CD;   --warning-text: #856404;
+    --danger-bg:  #F8D7DA;   --danger-text:  #721C24;
 }
 
 [data-theme="dark"] {
@@ -142,7 +135,7 @@ body {
     margin-bottom: 1rem;
 }
 
-.alert-success { background: var(--success-bg); color: var(--success-text); }
+.alert-success { background: var(--success-bg); color: var(--success-text);}
 .alert-danger  { background: var(--danger-bg); color: var(--danger-text); }
 .alert-info    { background: var(--info-bg); color: var(--info-text); }
 .alert-warning { background: var(--warning-bg); color: var(--warning-text); }
@@ -216,7 +209,7 @@ button[type="submit"]:hover, .btn:hover {
 }
 
 .badge-full { background: var(--danger-bg); color: var(--danger-text); }
-.badge-enrolled { background: var(--success-bg); color: var(--success-text); }
+.badge-enrolled { background: var(--success-bg); color: var(--success-text); border: 3px solid var(--success-text);}
 .badge-admin { background: #6f42c1; color: #fff; }
 .badge-profesor { background: var(--info-bg); color: var(--info-text); }
 .badge-alumno { background: var(--success-bg); color: var(--success-text); }
@@ -436,14 +429,58 @@ button[type="submit"]:hover, .btn:hover {
 
 .answer-summary { font-size: 0.9rem; margin-top: 0.5rem; }
 
-#theme-toggle{
-    background: var(--accent);
-    color: var(--text-primary);
-    border: none;
-    padding: 0.6rem 1.2rem;
-    border-radius: 4px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 0.9rem;
+.btn, .btn-outline, .course-card, .material-card, .exam-card, 
+.question-card, .theme-toggle{
+    transition: background-color 0.2s ease,
+                transform 0.2s ease,
+                box-shadow 0.2s ease;
+}
+
+.course-card:hover, .material-card:hover, .exam-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+[data-theme="dark"] .course-card:hover, 
+[data-theme="dark"] .material-card:hover, 
+[data-theme="dark"] .exam-card:hover {
+    background: var(--surface-2);
+    border-color: var(--accent);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#toast-container {
+    position: fixed;
+    top: 4.4rem;
+    right: 0rem;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.toast{
+    padding: 0.75rem 1.25rem;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: toast-in 0.3s ease forwards;
+}
+
+.toast.alert-success {background: var(--success-bg); color: var(--success-text);}
+.toast.alert-danger {background: var(--danger-bg); color: var(--danger-text);}
+.toast.alert-warning {background: var(--warning-bg); color: var(--warning-text);}
+.toast.alert-info {background: var(--info-bg); color: var(--info-text);}
+
+@keyframes toast-in{
+    from { opacity: 0; transform: translateX(20px);}
+    to { opacity: 1; transform: translateX(0);}
+}
+
+.toast.hide {
+    animation: toast-out 0.3s ease forwards;
+}
+
+@keyframes toast-out{
+    to { opacity: 0; transform: translateX(20px);}
 }

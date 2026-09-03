@@ -38,5 +38,6 @@
     </div>
 {% endif %}
 
-<p><a href="{{ url_for('courses.list_in_school', school_id=school.id) }}">← Volver a los cursos</a></p>
+<p><a class="btn" href="{{ url_for('courses.list_in_school', school_id=school.id) }}">← Volver a los cursos</a></p>
+<p><a class="btn" href="{{ url_for('courses.index') }}">← Volver al listado</a></p>
 {% endblock %}
