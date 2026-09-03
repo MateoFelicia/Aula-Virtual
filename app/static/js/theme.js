@@ -1,4 +1,4 @@
-let tema_guardado = localStorage.getItem('tema')
+
 if(!tema_guardado){
     tema_guardado = 'light'
     localStorage.setItem('tema', 'light')

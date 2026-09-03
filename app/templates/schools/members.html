@@ -13,7 +13,7 @@
             {{ form.email(size=30, placeholder="email@ejemplo.com") }}
             {% for error in form.email.errors %}<span class="error">{{ error }}</span>{% endfor %}
         </div>
-        {{ form.submit() }}
+        {{ form.submit(class="btn") }}
     </form>
 </div>
 

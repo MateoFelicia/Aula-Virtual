@@ -19,7 +19,7 @@
         {% for error in form.description.errors %}<span class="error">{{ error }}</span>{% endfor %}
     </div>
 
-    {{ form.submit() }}
+    {{ form.submit(class="btn") }}
 </form>
 
 <p><a class="btn" href="{{ url_for('schools.index') }}">← Volver a mis colegios</a></p>
