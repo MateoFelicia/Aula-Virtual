@@ -25,8 +25,8 @@
         {% for error in form.capacity.errors %}<span class="error">{{ error }}</span>{% endfor %}
     </div>
 
-    {{ form.submit() }}
+    {{ form.submit(class="btn") }}
 </form>
 
-<p><a href="{{ url_for('courses.index') }}">← Volver al listado</a></p>
+<p><a class="btn" href="{{ url_for('courses.index') }}">← Volver al listado</a></p>
 {% endblock %}

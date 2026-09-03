@@ -16,7 +16,7 @@
         <div class="field-inline">
             {{ form.email(placeholder="alumno@ejemplo.com") }}
             {% for error in form.email.errors %}<span class="error">{{ error }}</span>{% endfor %}
-            {{ form.submit() }}
+            {{ form.submit(class="btn") }}
         </div>
     </form>
 </div>
@@ -57,5 +57,5 @@
     <p class="empty-state">Todavía no hay alumnos inscriptos en este curso.</p>
 {% endif %}
 
-<p><a href="{{ url_for('courses.detail', course_id=course.id) }}">← Volver al curso</a></p>
+<p><a class="btn" href="{{ url_for('courses.detail', course_id=course.id) }}">← Volver al curso</a></p>
 {% endblock %}

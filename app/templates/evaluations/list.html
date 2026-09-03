@@ -60,5 +60,5 @@
     <p class="empty-state">Todavía no hay exámenes en este curso.</p>
 {% endif %}
 
-<p><a href="{{ url_for('courses.detail', course_id=course.id) }}">← Volver al curso</a></p>
+<p><a class="btn" href="{{ url_for('courses.detail', course_id=course.id) }}">← Volver al curso</a></p>
 {% endblock %}

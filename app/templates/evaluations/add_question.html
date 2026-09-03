@@ -49,10 +49,10 @@
         {% for error in form.correct_option.errors %}<span class="error">{{ error }}</span>{% endfor %}
     </div>
 
-    {{ form.submit() }}
+    {{ form.submit(class="btn") }}
 </form>
 
 <div class="course-actions" style="margin-top:1rem;">
-    <a href="{{ url_for('evaluations.list_exams', course_id=course.id) }}" class="btn btn-outline">Terminar y volver</a>
+    <a class="btn" href="{{ url_for('evaluations.list_exams', course_id=course.id) }}" class="btn btn-outline">Terminar y volver</a>
 </div>
 {% endblock %}

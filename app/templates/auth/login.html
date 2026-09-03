@@ -5,8 +5,7 @@
 {% block content %}
 <h1>Iniciar sesión</h1>
 <form method="POST" novalidate>
-    {{ form.hidden_tag() }} #Este es el form que se hace para conseguir los valores, "form"
-
+    {{ form.hidden_tag() }} 
     <div class="field">
         {{ forms.render_field(form.email, size=32) }}
     </div>
@@ -15,7 +14,7 @@
         {{ forms.render_field(form.password, size=32) }}
     </div>
 
-    {{ form.submit() }}
+    {{ form.submit(class="btn") }}
 </form>
-<p>¿No tenés cuenta? <a href="{{ url_for('auth.register') }}">Registrate acá</a></p>
+<p>¿No tenés cuenta? <a class="btn" href="{{ url_for('auth.register') }}">Registrate acá</a></p>
 {% endblock %}
